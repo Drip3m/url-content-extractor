@@ -34,7 +34,28 @@ This API is designed to be called by other AI agents:
 
 ### MCP Integration
 
-Claude, Cursor, and other MCP-compatible agents can discover and use this service as an MCP tool.
+This service is also available as an **MCP server** — Claude Desktop, Claude Code, Cursor, and any MCP-compatible client can use it.
+
+**Claude Desktop config:**
+```json
+{
+  "mcpServers": {
+    "url-content-extractor": {
+      "command": "python",
+      "args": ["/path/to/mcp_server.py"],
+      "env": {
+        "NVM_API_KEY": "live:your-key",
+        "NVM_AGENT_ID": "your-agent-id",
+        "NVM_PLAN_ID": "your-plan-id"
+      }
+    }
+  }
+}
+```
+
+**Tools:**
+- `extract_url(url)` — Extract clean text from any webpage (requires purchased credits)
+- `extract_url_raw(url)` — Check service status
 
 ## For Humans
 
