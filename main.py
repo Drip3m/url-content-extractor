@@ -79,16 +79,23 @@ async def verify_payment(request: Request):
         )
 
     # Verify permissions
-    verification = payments.facilitator.verify_permissions(
-        payment_required=payment_required,
-        x402_access_token=x402_token,
-        max_amount="1",
-    )
-
-    if not verification["is_valid"]:
+    try:
+        verification = payments.facilitator.verify_permissions(
+            payment_required=payment_required,
+            x402_access_token=x402_token,
+            max_amount="1",
+        )
+        if not verification.get("is_valid", False):
+            raise HTTPException(
+                status_code=402,
+                detail={"error": verification.get("invalid_reason", "Invalid payment")},
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
         raise HTTPException(
             status_code=402,
-            detail={"error": verification.get("invalid_reason", "Invalid payment")},
+            detail={"error": f"Invalid payment token: {str(e)}"},
         )
 
     return payment_required, x402_token
