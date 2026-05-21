@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: url-content-extractor
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: NVM_API_KEY
+        sync: false
+      - key: NVM_AGENT_ID
+        sync: false
+      - key: NVM_PLAN_ID
+        sync: false
+      - key: NVM_ENV
+        value: live
+      - key: PORT
+        value: 8080
